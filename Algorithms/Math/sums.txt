@@ -1,0 +1,2 @@
+1 - Sum from 1 -> n : (n * (n + 1))/2;
+1 - sum for squared numbers from 1 -> n : [n(n+1)(2n+1)] / 6
