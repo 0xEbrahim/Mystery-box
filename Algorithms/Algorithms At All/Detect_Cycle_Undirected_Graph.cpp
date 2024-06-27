@@ -6,12 +6,9 @@ bool detect_cycle(int node, int parent){
         if(!vis[child]) {
             if (detect_cycle(child, node))
                 return true;
-        }else {
-            if (child != parent)
-                return true;
-            else
-                return false;
-        }
+        }else if (child != parent)
+                    return true;
+
     }
     return false;
 }
