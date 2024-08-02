@@ -1,49 +1,44 @@
 struct Node {
-    int min;
-
+    ll sum;
     Node(){
-        min = LLONG_MAX;
+        sum = 0;
     }
 
-    Node(int x){
-        min = x;
+    Node(ll x){
+        sum = x;
     }
 
-    void change(int x){
-        min = x;
+    void change(ll x){
+        sum = x;
     }
 
 };
 
 struct shagarty {
-    shagarty(int n){
-
+    shagarty(ll n){
         N = 1;
-
         while(N < n)
             N *= 2;
-
-        seg.assign(2 * N, Node());
+        seg.assign(2LL * N, Node());
     }
 private:
-    int N;
+    ll N;
     vector<Node>seg;
     // can be changed
     Node merge(Node & l, Node & r){
         Node ans = Node();
-        ans.min = min(l.min , r.min);
+        ans.sum = l.sum + r.sum;
         return ans;
     }
 
     // 0 - indexed & r is not included
-    void set(int idx, int value, int node, int l, int r){
-
+    void set(ll idx, ll value, ll node, ll l, ll r){
         if(r - l == 1) {
             seg[node].change(value);
             return;
         }
 
-        int mid = (l + r) / 2;
+        ll mid = (l + r) / 2LL;
 
         if(idx < mid)
             set(idx, value, 2 * node + 1, l, mid);
@@ -54,24 +49,37 @@ private:
     }
 
     // 0 - indexed & r is not included
-    Node get(int l, int r, int st, int ed, int node){
-
+    Node get(ll l, ll r, ll st, ll ed, ll node){
         if(st >= l && ed <= r){
             return seg[node];
         }
         if(st >= r || ed <= l)
             return Node();
-
-        int mid = (st + ed) / 2;
+        ll mid = (st + ed) / 2;
         Node left = get(l, r, st, mid, 2 * node + 1);
         Node right = get(l, r , mid , ed , 2 * node + 2);
         return merge(left, right);
     }
+    void build(vector<ll>&v, ll node, ll l, ll r){
+        if(r - l == 1){
+            if(l < (int)v.size()){
+                seg[node].change(v[l]);
+            }
+            return;
+        }
+        ll mid = (l + r) / 2;
+        build(v, 2 * node + 1, l, mid);
+        build(v , 2 * node + 2, mid, r);
+        seg[node] = merge(seg[2 * node + 1], seg[2 * node + 2]);
+    }
 public:
-    void set(int idx, int val){
+    void set(ll idx, ll val){
         set(idx, val, 0, 0 , N);
     }
-    int get(int l , int r){
-        return get(l, r, 0, N, 0).min;
+    ll get(ll l , ll r){
+        return get(l, r, 0, N, 0).sum;
+    }
+    void build(vector<ll>&a){
+        build(a , 0,0,N);
     }
 };
