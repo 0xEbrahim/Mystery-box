@@ -21,7 +21,6 @@ struct shagarty {
             N *= 2;
         seg.assign(2LL * N, Node());
     }
-private:
     ll N;
     vector<Node>seg;
     // can be changed
@@ -72,7 +71,6 @@ private:
         build(v , 2 * node + 2, mid, r);
         seg[node] = merge(seg[2 * node + 1], seg[2 * node + 2]);
     }
-public:
     void set(ll idx, ll val){
         set(idx, val, 0, 0 , N);
     }
