@@ -14,8 +14,8 @@ struct Node {
 
 };
 
-struct shagarty {
-    shagarty(ll n){
+struct Shagarty {
+    Shagarty(ll n){
         N = 1;
         while(N < n)
             N *= 2;
