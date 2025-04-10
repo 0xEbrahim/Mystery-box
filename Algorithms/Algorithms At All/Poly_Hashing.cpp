@@ -1,3 +1,7 @@
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+long long rnd(long long l, long long r){
+    return uniform_int_distribution<long long>(l, r)(rng);
+}
 struct Shash {
     int base, inv, mod, n;
     vector<long long>pw{1}, invpw{1}, pref{0};
