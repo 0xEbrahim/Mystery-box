@@ -14,8 +14,8 @@ struct Node {
 
 };
 
-struct shagarty {
-    shagarty(ll n){
+struct Shagarty {
+    Shagarty(ll n){
         N = 1;
         while(N < n)
             N *= 2;
@@ -24,13 +24,13 @@ struct shagarty {
 private:
     ll N;
     vector<Node>seg;
-    // can be changed
+   
     Node merge(Node & l, Node & r){
         Node ans = Node();
         ans.mx = max(l.mx , r.mx);
         return ans;
     }
-    // 0 - indexed & r is not included
+    
     void set(ll idx, ll value, ll node, ll l, ll r){
         if(r - l == 1) {
             seg[node].change(value);
@@ -47,7 +47,7 @@ private:
         seg[node] = merge(seg[2 * node + 1], seg[2 * node + 2]);
     }
 
-    // 0 - indexed & r is not included
+   
     Node get(ll l, ll r, ll st, ll ed, ll node){
         if(st >= l && ed <= r){
             return seg[node];
@@ -80,19 +80,15 @@ private:
         else
             return find_Kth(mid, r, 2 * node + 2, k - seg[2 * node + 1].mx);
     }
-    ll get_max_equal( ll l, ll r, ll node, ll val){
-        if (seg[node].mx < val or r <= req) {
-            return -1;
-        }
-        if(r - l == 1)
-            return l;
-        ll mid = l + (r - l) / 2;
-        int left = 2 * node + 1, right = 2 * node + 2;
-        int ans = get_max_equal(l,mid, left, val);
-        if (ans == -1) {
-            return get_max_equal(mid, r, right, val);
-        }
-        return ans;
+    int max_eq(int node, int l, int r, int ql, int qr, int x) {
+        if (r < ql || l > qr || seg[node].mx < x) return -1;
+
+        if (l == r) return l;
+
+        int mid = (l + r) / 2;
+        int left = max_eq(2 * node + 1, l, mid, ql, qr, x);
+        if (left != -1) return left;
+        return max_eq(2 * node + 2, mid + 1, r, ql, qr, x);
     }
 public:
     void set(ll idx, ll val){
@@ -107,7 +103,7 @@ public:
     ll find_Kth(int k){
         return find_Kth(0,N,0,k);
     }
-    ll get_max_equal( ll k){
-        return get_max_equal(0,N,0,k);
+    int max_eq(int ql, int qr, int x) {
+        return max_eq(0, 0, N , ql, qr, x);
     }
 };
